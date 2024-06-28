@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title text-center">Editar Cliente</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{url_for('add_user')}}">
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input type="text" id="nome" name="nome" required class="form-control" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idade">Idade</label>
+                            <input type="text" id="idade" name="idade" required class="form-control" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endereco">Endereço</label>
+                            <input type="text" id="endereco" name="endereco" required class="form-control" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" name="logradouro" required class="form-control" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" name="cidade" required class="form-control" 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" name="estado" required class="form-control" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="text" id="email" name="email" required class="form-control" >
+                        </div>
+
+                        <div class="text-center">
+                            <input type="submit" value="Confirmar" class="btn btn-primary">
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

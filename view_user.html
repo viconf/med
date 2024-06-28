@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <h3 class="text-center text-muted mb-3">Detalhes do Cliente</h3>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Nome:</strong> {{ user.NOME }}</p>
+            <p><strong>Idade:</strong> {{ user.IDADE }}</p>
+            <p><strong>Endereço:</strong> {{ user.ENDERECO }}</p>
+            <p><strong>Logradouro:</strong> {{ user.LOGRADOURO }}</p>
+            <p><strong>Cidade:</strong> {{ user.CIDADE }}</p>
+            <p><strong>Estado:</strong> {{ user.ESTADO }}</p>
+            <p><strong>E-mail:</strong> {{ user.EMAIL }}</p>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Voltar</a>
+    </div>
+</div>
+{% endblock %}

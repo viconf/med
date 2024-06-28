@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <h3 class="text-center text-muted mb-3">Lista de Clientes</h3>
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <form action="{{ url_for('index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Buscar por nome" name="search_query" value="{{ request.args.get('search_query', '') }}">
+                    <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Idade</th>
+                <th scope="col">Rua</th>
+                <th scope="col">Número</th>
+                <th scope="col">Cidade</th>
+                <th scope="col">Estado</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in datas %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <button type="button" class="btn btn-link view-user" data-id="{{ row.ID }}" style="text-decoration: none; color: inherit;">{{ row.NOME }}</button>
+                </td>
+                <td>{{ row.IDADE }}</td>
+                <td>{{ row.ENDERECO }}</td>
+                <td>{{ row.LOGRADOURO }}</td>
+                <td>{{ row.CIDADE }}</td>
+                <td>{{ row.ESTADO }}</td>
+                <td>{{ row.EMAIL }}</td>
+                <td>
+                    <a href="{{ url_for('edit_user', id=row.ID) }}" class="btn btn-primary">Editar</a>
+                    <a href="{{ url_for('delete_user', id=row.ID) }}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja apagar?')">Deletar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userModalLabel">Detalhes do Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Nome:</strong> <span id="modalNome"></span></p>
+        <p><strong>Idade:</strong> <span id="modalIdade"></span></p>
+        <p><strong>Endereço:</strong> <span id="modalEndereco"></span></p>
+        <p><strong>Logradouro:</strong> <span id="modalLogradouro"></span></p>
+        <p><strong>Cidade:</strong> <span id="modalCidade"></span></p>
+        <p><strong>Estado:</strong> <span id="modalEstado"></span></p>
+        <p><strong>E-mail:</strong> <span id="modalEmail"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary" id="generateFichaButton">Gerar Ficha</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewButtons = document.querySelectorAll('.view-user');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                
+                fetch(`/user_details/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('modalNome').innerText = data.NOME;
+                        document.getElementById('modalIdade').innerText = data.IDADE;
+                        document.getElementById('modalEndereco').innerText = data.ENDERECO;
+                        document.getElementById('modalLogradouro').innerText = data.LOGRADOURO;
+                        document.getElementById('modalCidade').innerText = data.CIDADE;
+                        document.getElementById('modalEstado').innerText = data.ESTADO;
+                        document.getElementById('modalEmail').innerText = data.EMAIL;
+
+                        document.getElementById('generateFichaButton').setAttribute('data-id', userId);
+                        
+                        const userModal = new bootstrap.Modal(document.getElementById('userModal'));
+                        userModal.show();
+                    });
+            });
+        });
+
+        document.getElementById('generateFichaButton').addEventListener('click', function() {
+            const userId = this.getAttribute('data-id');
+            window.location.href = `/generate_ficha/${userId}`;
+        });
+    });
+</script>
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Logado como: {{ username }}</span>
+
+      {% if 'username' in session %}
+          <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm float-right">Logout</a>
+      {% endif %}
+  </div>
+</footer>
+{% endblock %}
