@@ -1,57 +1,107 @@
 {% extends 'layout.html' %}
+
 {% block body %}
 <div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title text-center">Editar Usuário</h3>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="{{ url_for('edit_user', id=datas['ID']) }}">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <input type="text" id="nome" name="nome" required class="form-control" value="{{ datas['NOME'] }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="idade">Idade</label>
-                            <input type="text" id="idade" name="idade" required class="form-control" value="{{ datas['IDADE'] }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="endereco">Endereço</label>
-                            <input type="text" id="endereco" name="endereco" required class="form-control" value="{{ datas['ENDERECO'] }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="logradouro">Logradouro</label>
-                            <input type="text" id="logradouro" name="logradouro" required class="form-control" value="{{ datas['LOGRADOURO'] }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cidade">Cidade</label>
-                            <input type="text" id="cidade" name="cidade" required class="form-control" value="{{ datas['CIDADE'] }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="estado">Estado</label>
-                            <input type="text" id="estado" name="estado" required class="form-control" value="{{ datas['ESTADO'] }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" required class="form-control" value="{{ datas['EMAIL'] }}">
-                        </div>
-                        <br>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Confirmar</button>
-                            <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Cancelar</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <h3 class="text-center text-muted mb-3">Editar Cliente</h3>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ datas['NOME'] }}" required>
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="idade" class="form-label">Idade</label>
+            <input type="number" class="form-control" id="idade" name="idade" value="{{ datas['IDADE'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="endereco" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" value="{{ datas['ENDERECO'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="logradouro" class="form-label">Logradouro</label>
+            <input type="text" class="form-control" id="logradouro" name="logradouro" value="{{ datas['LOGRADOURO'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="cidade" class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="cidade" name="cidade" value="{{ datas['CIDADE'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <input type="text" class="form-control" id="estado" name="estado" value="{{ datas['ESTADO'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ datas['EMAIL'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select class="form-select" id="sexo" name="sexo" required>
+                <option value="Masculino" {% if datas['SEXO'] == 'Masculino' %}selected{% endif %}>Masculino</option>
+                <option value="Feminino" {% if datas['SEXO'] == 'Feminino' %}selected{% endif %}>Feminino</option>
+                <option value="Outro" {% if datas['SEXO'] == 'Outro' %}selected{% endif %}>Outro</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="nascimento" class="form-label">Data de Nascimento</label>
+            <input type="date" class="form-control" id="nascimento" name="nascimento" value="{{ datas['NASCIMENTO'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="escolaridade" class="form-label">Escolaridade</label>
+            <select class="form-select" id="escolaridade" name="escolaridade" required>
+                <option value="Fundamental Incompleto" {% if datas['ESCOLARIDADE'] == 'Fundamental Incompleto' %}selected{% endif %}>Fundamental Incompleto</option>
+                <option value="Fundamental Completo" {% if datas['ESCOLARIDADE'] == 'Fundamental Completo' %}selected{% endif %}>Fundamental Completo</option>
+                <option value="Médio Incompleto" {% if datas['ESCOLARIDADE'] == 'Médio Incompleto' %}selected{% endif %}>Médio Incompleto</option>
+                <option value="Médio Completo" {% if datas['ESCOLARIDADE'] == 'Médio Completo' %}selected{% endif %}>Médio Completo</option>
+                <option value="Superior Incompleto" {% if datas['ESCOLARIDADE'] == 'Superior Incompleto' %}selected{% endif %}>Superior Incompleto</option>
+                <option value="Superior Completo" {% if datas['ESCOLARIDADE'] == 'Superior Completo' %}selected{% endif %}>Superior Completo</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input type="text" class="form-control" id="telefone" name="telefone" value="{{ datas['TELEFONE'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" value="{{ datas['CPF'] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="rg" class="form-label">RG</label>
+            <input type="text" class="form-control" id="rg" name="rg" value="{{ datas['RG'] }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Máscara para o CPF
+        const cpfInput = document.getElementById('cpf');
+        cpfInput.addEventListener('input', function() {
+            let value = cpfInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            cpfInput.value = value;
+        });
+
+        // Máscara para o RG
+        const rgInput = document.getElementById('rg');
+        rgInput.addEventListener('input', function() {
+            let value = rgInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1})$/, '$1-$2');
+            rgInput.value = value;
+        });
+
+        // Máscara para o telefone
+        const telefoneInput = document.getElementById('telefone');
+        telefoneInput.addEventListener('input', function() {
+            let value = telefoneInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            telefoneInput.value = value;
+        });
+    });
+</script>
+
 {% endblock %}

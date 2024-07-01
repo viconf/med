@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" href="{{ url_for('static', filename='cruz.ico') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -32,8 +33,7 @@
 <body class="text-center">
     <main class="form-signin">
         <form method="post" action="{{ url_for('login') }}">
-            <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="57">
-            <h1 class="h3 mb-3 fw-normal">Login</h1>
+            <img class="mb-4" src="{{ url_for('static', filename='cruz.png') }}" alt="" width="72" height="72">            <h1 class="h3 mb-3 fw-normal">Login</h1>
 
             <div class="form-floating">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Nome de usuário" required autofocus>

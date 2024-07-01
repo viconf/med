@@ -2,57 +2,108 @@
 
 {% block body %}
 <div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title text-center">Editar Cliente</h3>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="{{url_for('add_user')}}">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <input type="text" id="nome" name="nome" required class="form-control" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="idade">Idade</label>
-                            <input type="text" id="idade" name="idade" required class="form-control" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="endereco">Endereço</label>
-                            <input type="text" id="endereco" name="endereco" required class="form-control" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="logradouro">Logradouro</label>
-                            <input type="text" id="logradouro" name="logradouro" required class="form-control" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cidade">Cidade</label>
-                            <input type="text" id="cidade" name="cidade" required class="form-control" 
-                        </div>
-
-                        <div class="form-group">
-                            <label for="estado">Estado</label>
-                            <input type="text" id="estado" name="estado" required class="form-control" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="text" id="email" name="email" required class="form-control" >
-                        </div>
-
-                        <div class="text-center">
-                            <input type="submit" value="Confirmar" class="btn btn-primary">
-                            <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Cancelar</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <h3 class="text-center text-muted mb-3">Adicionar Cliente</h3>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="idade" class="form-label">Idade</label>
+            <input type="number" class="form-control" id="idade" name="idade" required>
+        </div>
+        <div class="mb-3">
+            <label for="endereco" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" required>
+        </div>
+        <div class="mb-3">
+            <label for="logradouro" class="form-label">Logradouro</label>
+            <input type="text" class="form-control" id="logradouro" name="logradouro" required>
+        </div>
+        <div class="mb-3">
+            <label for="cidade" class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="cidade" name="cidade" required>
+        </div>
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <input type="text" class="form-control" id="estado" name="estado" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select class="form-select" id="sexo" name="sexo" required>
+                <option value="">Selecione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Outro">Outro</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="nascimento" class="form-label">Data de Nascimento</label>
+            <input type="date" class="form-control" id="nascimento" name="nascimento" required>
+        </div>
+        <div class="mb-3">
+            <label for="escolaridade" class="form-label">Escolaridade</label>
+            <select class="form-select" id="escolaridade" name="escolaridade" required>
+                <option value="">Selecione</option>
+                <option value="Fundamental Incompleto">Fundamental Incompleto</option>
+                <option value="Fundamental Completo">Fundamental Completo</option>
+                <option value="Médio Incompleto">Médio Incompleto</option>
+                <option value="Médio Completo">Médio Completo</option>
+                <option value="Superior Incompleto">Superior Incompleto</option>
+                <option value="Superior Completo">Superior Completo</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input type="text" class="form-control" id="telefone" name="telefone" required>
+        </div>
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" required>
+        </div>
+        <div class="mb-3">
+            <label for="rg" class="form-label">RG</label>
+            <input type="text" class="form-control" id="rg" name="rg" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+    </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Máscara para o CPF
+        const cpfInput = document.getElementById('cpf');
+        cpfInput.addEventListener('input', function() {
+            let value = cpfInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            cpfInput.value = value;
+        });
+
+        // Máscara para o RG
+        const rgInput = document.getElementById('rg');
+        rgInput.addEventListener('input', function() {
+            let value = rgInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1})$/, '$1-$2');
+            rgInput.value = value;
+        });
+
+        // Máscara para o telefone
+        const telefoneInput = document.getElementById('telefone');
+        telefoneInput.addEventListener('input', function() {
+            let value = telefoneInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            telefoneInput.value = value;
+        });
+    });
+</script>
+
 {% endblock %}

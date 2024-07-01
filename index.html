@@ -19,11 +19,10 @@
                 <th scope="col">ID</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Idade</th>
-                <th scope="col">Rua</th>
-                <th scope="col">Número</th>
                 <th scope="col">Cidade</th>
                 <th scope="col">Estado</th>
-                <th scope="col">E-mail</th>
+                <th scope="col">Sexo</th>
+                <th scope="col">CPF</th> <!-- Novo campo CPF adicionado -->
                 <th scope="col">Ações</th>
             </tr>
         </thead>
@@ -35,11 +34,10 @@
                     <button type="button" class="btn btn-link view-user" data-id="{{ row.ID }}" style="text-decoration: none; color: inherit;">{{ row.NOME }}</button>
                 </td>
                 <td>{{ row.IDADE }}</td>
-                <td>{{ row.ENDERECO }}</td>
-                <td>{{ row.LOGRADOURO }}</td>
                 <td>{{ row.CIDADE }}</td>
                 <td>{{ row.ESTADO }}</td>
-                <td>{{ row.EMAIL }}</td>
+                <td>{{ row.SEXO }}</td>
+                <td>{{ row.CPF }}</td> <!-- Exibe o CPF -->
                 <td>
                     <a href="{{ url_for('edit_user', id=row.ID) }}" class="btn btn-primary">Editar</a>
                     <a href="{{ url_for('delete_user', id=row.ID) }}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja apagar?')">Deletar</a>
@@ -66,6 +64,11 @@
         <p><strong>Cidade:</strong> <span id="modalCidade"></span></p>
         <p><strong>Estado:</strong> <span id="modalEstado"></span></p>
         <p><strong>E-mail:</strong> <span id="modalEmail"></span></p>
+        <p><strong>Sexo:</strong> <span id="modalSexo"></span></p>
+        <p><strong>Data Nascimento:</strong> <span id="modalNascimento"></span></p>
+        <p><strong>Escolaridade:</strong> <span id="modalEscolaridade"></span></p>
+        <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
+        <p><strong>CPF:</strong> <span id="modalCpf"></span></p> <!-- Adicionado campo CPF no modal -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -93,6 +96,11 @@
                         document.getElementById('modalCidade').innerText = data.CIDADE;
                         document.getElementById('modalEstado').innerText = data.ESTADO;
                         document.getElementById('modalEmail').innerText = data.EMAIL;
+                        document.getElementById('modalSexo').innerText = data.SEXO;
+                        document.getElementById('modalNascimento').innerText = data.NASCIMENTO;
+                        document.getElementById('modalEscolaridade').innerText = data.ESCOLARIDADE;
+                        document.getElementById('modalTelefone').innerText = data.TELEFONE;
+                        document.getElementById('modalCpf').innerText = data.CPF; // Exibe o CPF no modal
 
                         document.getElementById('generateFichaButton').setAttribute('data-id', userId);
                         
@@ -108,13 +116,4 @@
         });
     });
 </script>
-<footer class="footer mt-auto py-3 bg-light">
-  <div class="container">
-    <span class="text-muted">Logado como: {{ username }}</span>
-
-      {% if 'username' in session %}
-          <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm float-right">Logout</a>
-      {% endif %}
-  </div>
-</footer>
 {% endblock %}
