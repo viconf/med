@@ -22,7 +22,7 @@
                 <th scope="col">Cidade</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Sexo</th>
-                <th scope="col">CPF</th> <!-- Novo campo CPF adicionado -->
+                <th scope="col">CPF</th>
                 <th scope="col">Ações</th>
             </tr>
         </thead>
@@ -37,10 +37,11 @@
                 <td>{{ row.CIDADE }}</td>
                 <td>{{ row.ESTADO }}</td>
                 <td>{{ row.SEXO }}</td>
-                <td>{{ row.CPF }}</td> <!-- Exibe o CPF -->
+                <td>{{ row.CPF }}</td>
                 <td>
                     <a href="{{ url_for('edit_user', id=row.ID) }}" class="btn btn-primary">Editar</a>
                     <a href="{{ url_for('delete_user', id=row.ID) }}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja apagar?')">Deletar</a>
+                    <button type="button" class="btn btn-success generate-ficha" data-id="{{ row.ID }}">Gerar Ficha</button>
                 </td>
             </tr>
             {% endfor %}
@@ -48,34 +49,38 @@
     </table>
 </div>
 
-<!-- Modal -->
+<!-- Modal de Detalhes do Cliente -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="userModalLabel">Detalhes do Cliente</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Nome:</strong> <span id="modalNome"></span></p>
-        <p><strong>Idade:</strong> <span id="modalIdade"></span></p>
-        <p><strong>Endereço:</strong> <span id="modalEndereco"></span></p>
-        <p><strong>Logradouro:</strong> <span id="modalLogradouro"></span></p>
-        <p><strong>Cidade:</strong> <span id="modalCidade"></span></p>
-        <p><strong>Estado:</strong> <span id="modalEstado"></span></p>
-        <p><strong>E-mail:</strong> <span id="modalEmail"></span></p>
-        <p><strong>Sexo:</strong> <span id="modalSexo"></span></p>
-        <p><strong>Data Nascimento:</strong> <span id="modalNascimento"></span></p>
-        <p><strong>Escolaridade:</strong> <span id="modalEscolaridade"></span></p>
-        <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
-        <p><strong>CPF:</strong> <span id="modalCpf"></span></p> <!-- Adicionado campo CPF no modal -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary" id="generateFichaButton">Gerar Ficha</button>
-      </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">Detalhes do Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nome:</strong> <span id="modalNome"></span></p>
+                <p><strong>Idade:</strong> <span id="modalIdade"></span></p>
+                <p><strong>Endereço:</strong> <span id="modalEndereco"></span></p>
+                <p><strong>Logradouro:</strong> <span id="modalLogradouro"></span></p>
+                <p><strong>Cidade:</strong> <span id="modalCidade"></span></p>
+                <p><strong>Estado:</strong> <span id="modalEstado"></span></p>
+                <p><strong>E-mail:</strong> <span id="modalEmail"></span></p>
+                <p><strong>Sexo:</strong> <span id="modalSexo"></span></p>
+                <p><strong>Data Nascimento:</strong> <span id="modalNascimento"></span></p>
+                <p><strong>Escolaridade:</strong> <span id="modalEscolaridade"></span></p>
+                <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
+                <p><strong>CPF:</strong> <span id="modalCpf"></span></p>
+                
+                <!-- Detalhes de Atendimentos -->
+                <div id="attendanceDetails" class="mt-4">
+                    <!-- Aqui serão inseridos os detalhes de atendimentos -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
@@ -101,19 +106,66 @@
                         document.getElementById('modalEscolaridade').innerText = data.ESCOLARIDADE;
                         document.getElementById('modalTelefone').innerText = data.TELEFONE;
                         document.getElementById('modalCpf').innerText = data.CPF; // Exibe o CPF no modal
-
-                        document.getElementById('generateFichaButton').setAttribute('data-id', userId);
-                        
+                       
+                        // Carrega os detalhes de atendimentos por mês
+                        loadAttendanceDetails(userId);
+                       
                         const userModal = new bootstrap.Modal(document.getElementById('userModal'));
                         userModal.show();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar dados do servidor:', error);
                     });
             });
         });
 
-        document.getElementById('generateFichaButton').addEventListener('click', function() {
-            const userId = this.getAttribute('data-id');
-            window.location.href = `/generate_ficha/${userId}`;
+        const generateButtons = document.querySelectorAll('.generate-ficha');
+
+        generateButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                window.location.href = `/generate_ficha/${userId}`;
+            });
         });
+
+        // Função para carregar os detalhes de atendimentos por mês
+        function loadAttendanceDetails(userId) {
+            fetch(`/attendance_chart/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Dados recebidos do servidor:', data);
+                    
+                    // Verifica se há dados de atendimentos disponíveis
+                    if (data.counts && data.months && data.counts.length === data.months.length) {
+                        // Calcula o total de atendimentos
+                        const total = data.counts.reduce((acc, count) => acc + count, 0);
+                        
+                        // Mapeia números de mês para seus nomes completos em português
+                        const monthNames = [
+                            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                        ];
+                        
+                        // Monta o HTML para exibir os detalhes de atendimentos
+                        let html = '';
+                        for (let i = 0; i < data.months.length; i++) {
+                            const monthIndex = parseInt(data.months[i]) - 1; // Converte para índice de array
+                            const monthName = monthNames[monthIndex];
+                            const count = data.counts[i];
+                            const percentage = ((count / total) * 100).toFixed(2); // Calcula a porcentagem com 2 casas decimais
+                            html += `<p><strong>Mês ${monthName}:</strong> ${count} atendimentos (${percentage}%)</p>`;
+                        }
+
+                        // Exibe os detalhes no modal
+                        document.getElementById('attendanceDetails').innerHTML = html;
+                    } else {
+                        document.getElementById('attendanceDetails').innerHTML = '<p>Não há dados de atendimentos disponíveis.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar dados de atendimentos:', error);
+                });
+        }
     });
 </script>
 {% endblock %}
