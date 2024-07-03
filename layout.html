@@ -7,7 +7,7 @@
     <link rel="icon" href="{{ url_for('static', filename='cruz.ico') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/jquery.inputmask.min.js"></script>
-  </head>
+</head>
 <body>
   
     <header>
@@ -18,7 +18,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('index') }}">Home</a>
                         </li>
@@ -26,12 +26,16 @@
                             <a class="nav-link" href="{{ url_for('add_user') }}">Novo Cliente</a>
                         </li>
                     </ul>
-                    <span class="navbar-text ms-auto">
-                        Logado como: {{ username }}
-                    </span>
-                    {% if 'username' in session %}
-                        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm ms-2">Logout</a>
-                    {% endif %}
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <span class="navbar-text">Logado como: Dr. {{ session['nome_medico'] }}, {{ session['especialidade'] }} (CRM: {{ session['crm'] }})</span>
+                        </li>
+                        <li class="nav-item">
+                            {% if 'username' in session %}
+                                <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm ms-3">Logout</a>
+                            {% endif %}
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -52,7 +56,6 @@
         {% block body %}
         {% endblock %}
     </div>
-      
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </body>
