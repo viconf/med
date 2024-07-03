@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">Adicionar Atendimento</h2>
+    <form id="addAttendanceForm" method="POST" action="{{ url_for('add_attendance') }}">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Campos essenciais do atendimento -->
+                
+                <div class="form-group">
+                    <label for="registro">Registro:</label>
+                    <input type="text" class="form-control" id="registro" name="registro" required>
+                </div>
+                <div class="form-group">
+                    <label for="data_atendimento">Data de Atendimento:</label>
+                    <input type="date" class="form-control" id="data_atendimento" name="data_atendimento" required>
+                </div>
+                <div class="form-group">
+                    <label for="data_alta">Data de Alta:</label>
+                    <input type="date" class="form-control" id="data_alta" name="data_alta">
+                </div>
+                <!-- Campos do paciente -->
+                <div class="form-group">
+                    <label for="paciente_nome">Nome do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_nome" name="paciente_nome" value="{{ cliente['NOME'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_sexo">Sexo do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_sexo" name="paciente_sexo" value="{{ cliente['SEXO'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_data_nascimento">Data de Nascimento do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_data_nascimento" name="paciente_data_nascimento" value="{{ cliente['NASCIMENTO'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_idade">Idade do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_idade" name="paciente_idade" value="{{ cliente['IDADE'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_raca">Raça do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_raca" name="paciente_raca" required>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_telefone">Telefone do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_telefone" name="paciente_telefone" value="{{ cliente['TELEFONE'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_rg">RG do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_rg" name="paciente_rg" value="{{ cliente.get('RG', '') }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paciente_cpf">CPF do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_cpf" name="paciente_cpf" value="{{ cliente.get('CPF', '') }}" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paciente_convenio">Convênio do Paciente:</label>
+                    <input type="text" class="form-control" id="paciente_convenio" name="paciente_convenio" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Campos do médico -->
+                <div class="form-group">
+                    <label for="nome_medico">Nome do Médico:</label>
+                    <input type="text" class="form-control" id="nome_medico" name="nome_medico" value="{{ session['nome_medico'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="especialidade">Especialidade:</label>
+                    <input type="text" class="form-control" id="especialidade" name="especialidade" value="{{ session['especialidade'] }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="crm">CRM do Médico:</label>
+                    <input type="text" class="form-control" id="crm" name="crm" value="{{ session['crm'] }}" readonly>
+                </div>
+                <!-- Campos do atendimento -->
+                <div class="form-group">
+                    <label for="recepcao">Recepção:</label>
+                    <input type="text" class="form-control" id="recepcao" name="recepcao" required>
+                </div>
+                <div class="form-group">
+                    <label for="caracter">Caráter:</label>
+                    <input type="text" class="form-control" id="caracter" name="caracter" required>
+                </div>
+                <div class="form-group">
+                    <label for="pressao">Pressão:</label>
+                    <input type="text" class="form-control" id="pressao" name="pressao" required>
+                </div>
+                <div class="form-group">
+                    <label for="temperatura">Temperatura:</label>
+                    <input type="text" class="form-control" id="temperatura" name="temperatura" required>
+                </div>
+                <div class="form-group">
+                    <label for="peso">Peso:</label>
+                    <input type="text" class="form-control" id="peso" name="peso" required>
+                </div>
+                <div class="form-group">
+                    <label for="saturacao_o2">Saturação de O2:</label>
+                    <input type="text" class="form-control" id="saturacao_o2" name="saturacao_o2" required>
+                </div>
+                <div class="form-group">
+                    <label for="dextro">Dextro:</label>
+                    <input type="text" class="form-control" id="dextro" name="dextro" required>
+                </div>
+                <div class="form-group">
+                    <label for="frequencia_cardiaca">Frequência Cardíaca:</label>
+                    <input type="text" class="form-control" id="frequencia_cardiaca" name="frequencia_cardiaca" required>
+                </div>
+                <div class="form-group">
+                    <label for="frequencia_respiratoria">Frequência Respiratória:</label>
+                    <input type="text" class="form-control" id="frequencia_respiratoria" name="frequencia_respiratoria" required>
+                </div>
+                <div class="form-group">
+                    <label for="situacao_queixa">Situação/Queixa:</label>
+                    <input type="text" class="form-control" id="situacao_queixa" name="situacao_queixa" required>
+                </div>
+                <div class="form-group">
+                    <label for="alergia">Alergia:</label>
+                    <input type="text" class="form-control" id="alergia" name="alergia" value="Nega">
+                </div>
+                <div class="form-group">
+                    <label for="uso_medicacao">Uso de Medicação:</label>
+                    <input type="text" class="form-control" id="uso_medicacao" name="uso_medicacao" value="Nega">
+                </div>
+                <div class="form-group">
+                    <label for="historico_saude">Histórico de Saúde:</label>
+                    <input type="text" class="form-control" id="historico_saude" name="historico_saude" value="Nega">
+                </div>
+                <div class="form-group">
+                    <label for="classificacao_risco">Classificação de Risco:</label>
+                    <input type="text" class="form-control" id="classificacao_risco" name="classificacao_risco" value="Nega">
+                </div>
+                <div class="form-group">
+                    <label for="anamnese">Anamnese:</label>
+                    <input type="text" class="form-control" id="anamnese" name="anamnese" required>
+                </div>
+                <div class="form-group">
+                    <label for="exames_fisicos">Exames Fisicos:</label>
+                    <input type="text" class="form-control" id="exames_fisicos" name="exames_fisicos" required>
+                </div>
+                <div class="form-group">
+                    <label for="conduta">Conduta:</label>
+                    <input type="text" class="form-control" id="conduta" name="conduta" required>
+                </div>
+                <div class="form-group">
+                    <label for="prescricao_medica">Prescrição Medica:</label>
+                    <input type="text" class="form-control" id="prescricao_medica" name="prescricao_medica" required>
+                </div>
+                <div class="form-group">
+                    <label for="cid">CID:</label>
+                    <input type="text" class="form-control" id="cid" name="cid" required>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-success" onclick="saveAndGeneratePDF()">Salvar e Gerar PDF</button>
+    </form>
+</div>
+
+<script>
+    function saveAndGeneratePDF() {
+        document.getElementById('addAttendanceForm').submit();
+        setTimeout(() => {
+            generatePDF();
+        }, 1000); // Espera 1 segundo para garantir que os dados foram salvos antes de gerar o PDF
+    }
+
+    function generatePDF() {
+        const formData = new FormData(document.getElementById('addAttendanceForm'));
+        const nomePaciente = formData.get('paciente_nome');
+        const timestamp = new Date().getTime(); // Obtém um timestamp único
+        const fileName = `atendimento_${nomePaciente}_${timestamp}.pdf`; // Adiciona o timestamp ao nome do arquivo
+
+        // Abre o PDF em uma nova aba
+        window.open(`/download/${fileName}`, '_blank');
+    }
+</script>
+{% endblock %}
